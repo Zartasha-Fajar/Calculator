@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Calculator</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #2c3e50, #4ca1af);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: 20px;
+    }
+
+    h1 {
+      color: white;
+      margin-bottom: 20px;
+      text-shadow: 1px 1px 4px black;
+      letter-spacing: 2px;
+    }
+
+    .myCal {
+      width: 350px;
+      background-color: #f7f7f7;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      padding: 20px;
+    }
+
+    .output {
+      height: 60px;
+      line-height: 60px;
+      background-color: #222;
+      color: #00ff99;
+      margin-bottom: 20px;
+      font-size: 1.8em;
+      text-align: right;
+      padding: 0 15px;
+      border-radius: 10px;
+      overflow-x: auto;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+
+    .btn {
+      width: 70px;
+      height: 70px;
+      background-color: #e0e0e0;
+      color: #333;
+      text-align: center;
+      line-height: 70px;
+      font-size: 1.5em;
+      font-weight: bold;
+      border-radius: 12px;
+      box-shadow: inset 0 0 5px #ccc;
+      transition: all 0.2s ease;
+      user-select: none;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #333;
+      color: #fff;
+      transform: scale(1.05);
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    @media (max-width: 400px) {
+      .myCal {
+        width: 90%;
+        padding: 15px;
+      }
+
+      .btn {
+        width: 60px;
+        height: 60px;
+        line-height: 60px;
+        font-size: 1.3em;
+      }
+
+      .output {
+        font-size: 1.5em;
+      }
+
+      h1 {
+        font-size: 1.5em;
+      }
+    }
+
+    @media (max-width: 300px) {
+      .btn {
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        font-size: 1em;
+      }
+
+      .output {
+        font-size: 1.2em;
+        height: 50px;
+        line-height: 50px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <h1>MY CALCULATOR</h1>
+  <div class="myCal"></div>
+
+  <script>
+    let myCalculator = document.querySelector(".myCal")
+    const myKeys = [
+      ['1', '2', '3', '+'],
+      ['4', '5', '6', '-'],
+      ['7', '8', '9', '*'],
+      ['C', '0', '=', '/']
+    ]
+    const myOper = ['+', '-', '*', '/']
+    let myOutput
+
+    document.addEventListener("DOMContentLoaded", function () {
+      myOutput = document.createElement("div")
+      myOutput.innerHTML = "0"
+      myOutput.classList.add("output")
+      myCalculator.appendChild(myOutput)
+
+      for (let y = 0; y < myKeys.length; y++) {
+        let div = document.createElement("div")
+        div.classList.add("row")
+        myCalculator.appendChild(div)
+
+        for (let x = 0; x < myKeys[y].length; x++) {
+          let btn = document.createElement("div")
+          btn.innerHTML = myKeys[y][x]
+          btn.classList.add("btn")
+          div.appendChild(btn)
+          btn.addEventListener("click", btnHit)
+        }
+      }
+    })
+
+    function btnHit() {
+      let myValue = this.innerText
+      let myCal = myOutput.innerText
+
+      if (myCal == "0") {
+        myCal = ""
+      }
+
+      if (myValue == "=") {
+        try {
+          myCal = eval(myCal)
+        } catch {
+          myCal = "Error"
+        }
+      } else if (myValue == "C") {
+        myCal = 0
+      } else {
+        let lastChar = myCal.slice(-1)
+        if (myOper.includes(myValue)) {
+          if (myOper.includes(lastChar)) {
+            myCal = myCal.slice(0, -1)
+          } else {
+            myCal = eval(myCal)
+          }
+        }
+        myCal += myValue
+      }
+
+      myOutput.innerText = myCal
+    }
+  </script>
+</body>
+
+</html>
